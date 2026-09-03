@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5400/banking
+    username: banking_user
+    password: banking_password
+  flyway:
+    enabled: true
