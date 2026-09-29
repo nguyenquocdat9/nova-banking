@@ -1,6 +1,6 @@
 package org.nova.customer.service.impl;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.nova.customer.entity.Customer;
 import org.nova.customer.dto.request.CustomerRequest;
@@ -10,6 +10,8 @@ import org.nova.customer.exception.CustomerNotFoundException;
 import org.nova.customer.exception.CustomerPhoneAlreadyExistsException;
 import org.nova.customer.repository.CustomerRepository;
 import org.nova.customer.service.CustomerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public CustomerResponse getCustomerById(UUID id) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() ->
@@ -62,6 +64,14 @@ public class CustomerServiceImpl implements CustomerService {
                 );
 
         return toResponse(customer);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<CustomerResponse> getCustomers(Pageable pageable) {
+        return customerRepository
+                .findAll(pageable)
+                .map(this::toResponse);
     }
 
     private CustomerResponse toResponse(Customer customer) {
