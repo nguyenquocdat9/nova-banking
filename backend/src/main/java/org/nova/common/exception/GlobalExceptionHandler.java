@@ -1,6 +1,7 @@
 package org.nova.common.exception;
 
 import org.nova.customer.exception.CustomerEmailAlreadyExistsException;
+import org.nova.customer.exception.CustomerNotFoundException;
 import org.nova.customer.exception.CustomerPhoneAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,6 +46,12 @@ public class GlobalExceptionHandler {
                 "Validation failed",
                 errors
         );
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleCustomerNotFoundException(CustomerNotFoundException ex) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
 }

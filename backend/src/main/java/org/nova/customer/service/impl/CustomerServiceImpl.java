@@ -6,12 +6,14 @@ import org.nova.customer.entity.Customer;
 import org.nova.customer.dto.request.CustomerRequest;
 import org.nova.customer.dto.response.CustomerResponse;
 import org.nova.customer.exception.CustomerEmailAlreadyExistsException;
+import org.nova.customer.exception.CustomerNotFoundException;
 import org.nova.customer.exception.CustomerPhoneAlreadyExistsException;
 import org.nova.customer.repository.CustomerRepository;
 import org.nova.customer.service.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +49,19 @@ public class CustomerServiceImpl implements CustomerService {
         Customer savedCustomer = customerRepository.save(newCustomer);
 
         return toResponse(savedCustomer);
+    }
+
+    @Override
+    @Transactional
+    public CustomerResponse getCustomerById(UUID id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() ->
+                        new CustomerNotFoundException(
+                                "Customer not found: " + id
+                        )
+                );
+
+        return toResponse(customer);
     }
 
     private CustomerResponse toResponse(Customer customer) {
