@@ -110,6 +110,22 @@ public class CustomerServiceImpl implements CustomerService {
         return toResponse(customer);
     }
 
+    @Override
+    @Transactional
+    public CustomerResponse closeCustomer(UUID id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() ->
+                        new CustomerNotFoundException("Customer not found: " + id)
+                );
+        if (CustomerStatus.CLOSED == customer.getStatus()) {
+            throw new CustomerAccountClosedException("Customer account closed");
+        }
+
+        customer.setStatus(CustomerStatus.CLOSED);
+        customer.setUpdatedAt(LocalDateTime.now());
+        return toResponse(customer);
+    }
+
     private CustomerResponse toResponse(Customer customer) {
         CustomerResponse response = new CustomerResponse();
         response.setId(customer.getId());

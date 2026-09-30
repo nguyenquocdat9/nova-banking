@@ -38,9 +38,7 @@ public class GlobalExceptionHandler {
 
         ex.getBindingResult()
                 .getFieldErrors()
-                .forEach((fieldError) -> {
-                    errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-                });
+                .forEach((fieldError) -> errors.put(fieldError.getField(), fieldError.getDefaultMessage()));
 
         return new ApiError(
                 HttpStatus.BAD_REQUEST.value(),
@@ -56,9 +54,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CustomerAccountClosedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleCustomerAccountClosedException(CustomerAccountClosedException ex) {
-        return new ApiError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
+        return new ApiError(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 
 }

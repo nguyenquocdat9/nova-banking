@@ -62,4 +62,9 @@ public class CustomerController {
     ) {
         return ResponseEntity.ok(customerService.updateCustomer(id, request));
     }
+
+    @PatchMapping("/{id}/close")
+    public ResponseEntity<CustomerResponse> closeCustomer(@PathVariable UUID id) {
+        return ResponseEntity.ok(customerService.closeCustomer(id));
+    }
 }

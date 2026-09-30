@@ -19,4 +19,6 @@ public interface CustomerService {
 
     CustomerResponse updateCustomer(UUID id, CustomerUpdateRequest request);
 
+    CustomerResponse closeCustomer(UUID id);
+
 }
