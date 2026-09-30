@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CustomerRequest {
+public class CustomerUpdateRequest {
 
     @NotBlank
     private String fullName;
@@ -20,5 +20,4 @@ public class CustomerRequest {
 
     @NotBlank
     private String phoneNumber;
-
 }

@@ -1,9 +1,12 @@
 package org.nova.customer.service.impl;
 
+import org.nova.customer.dto.request.CustomerUpdateRequest;
+import org.nova.customer.entity.CustomerStatus;
+import org.nova.customer.exception.CustomerAccountClosedException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.nova.customer.entity.Customer;
-import org.nova.customer.dto.request.CustomerRequest;
+import org.nova.customer.dto.request.CustomerCreateRequest;
 import org.nova.customer.dto.response.CustomerResponse;
 import org.nova.customer.exception.CustomerEmailAlreadyExistsException;
 import org.nova.customer.exception.CustomerNotFoundException;
@@ -25,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public CustomerResponse createCustomer(CustomerRequest request) {
+    public CustomerResponse createCustomer(CustomerCreateRequest request) {
 
         if (customerRepository.existsByEmail(request.getEmail())) {
             throw new CustomerEmailAlreadyExistsException(
@@ -68,10 +71,43 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CustomerResponse> getCustomers(Pageable pageable) {
-        return customerRepository
-                .findAll(pageable)
-                .map(this::toResponse);
+    public Page<CustomerResponse> getCustomers(CustomerStatus status, Pageable pageable) {
+        if (status == null) {
+            return customerRepository
+                    .findAll(pageable)
+                    .map(this::toResponse);
+        }  else {
+            return customerRepository
+                    .findByStatus(status, pageable)
+                    .map(this::toResponse);
+        }
+    }
+
+    @Override
+    @Transactional
+    public CustomerResponse updateCustomer(UUID id, CustomerUpdateRequest request) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() ->
+                        new CustomerNotFoundException(
+                                "Customer not found: " + id
+                        )
+                );
+        if (CustomerStatus.CLOSED == customer.getStatus()) {
+            throw new CustomerAccountClosedException("Customer account closed");
+        }
+        if (customerRepository.existsByEmailAndIdNot(request.getEmail(), id)) {
+            throw new CustomerEmailAlreadyExistsException("Customer email already exists: " + request.getEmail());
+        }
+        if (customerRepository.existsByPhoneNumberAndIdNot(request.getPhoneNumber(), id)) {
+            throw new CustomerPhoneAlreadyExistsException("Customer phone number already exists: " + request.getPhoneNumber());
+        }
+
+        customer.setFullName(request.getFullName());
+        customer.setEmail(request.getEmail());
+        customer.setPhoneNumber(request.getPhoneNumber());
+        customer.setUpdatedAt(LocalDateTime.now());
+
+        return toResponse(customer);
     }
 
     private CustomerResponse toResponse(Customer customer) {
