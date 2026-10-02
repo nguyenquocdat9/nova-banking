@@ -1,0 +1,3 @@
+CREATE SEQUENCE bank_account_number_seq
+    START WITH 100000000000
+    INCREMENT BY 1;

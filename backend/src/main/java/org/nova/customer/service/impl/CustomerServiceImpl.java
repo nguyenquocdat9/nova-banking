@@ -2,7 +2,7 @@ package org.nova.customer.service.impl;
 
 import org.nova.customer.dto.request.CustomerUpdateRequest;
 import org.nova.customer.entity.CustomerStatus;
-import org.nova.customer.exception.CustomerAccountClosedException;
+import org.nova.customer.exception.CustomerAccountNotActiveException;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.nova.customer.entity.Customer;
@@ -93,7 +93,7 @@ public class CustomerServiceImpl implements CustomerService {
                         )
                 );
         if (CustomerStatus.CLOSED == customer.getStatus()) {
-            throw new CustomerAccountClosedException("Customer account closed");
+            throw new CustomerAccountNotActiveException("Customer account closed");
         }
         if (customerRepository.existsByEmailAndIdNot(request.getEmail(), id)) {
             throw new CustomerEmailAlreadyExistsException("Customer email already exists: " + request.getEmail());
@@ -118,7 +118,7 @@ public class CustomerServiceImpl implements CustomerService {
                         new CustomerNotFoundException("Customer not found: " + id)
                 );
         if (CustomerStatus.CLOSED == customer.getStatus()) {
-            throw new CustomerAccountClosedException("Customer account closed");
+            throw new CustomerAccountNotActiveException("Customer account closed");
         }
 
         customer.setStatus(CustomerStatus.CLOSED);

@@ -1,6 +1,6 @@
 package org.nova.common.exception;
 
-import org.nova.customer.exception.CustomerAccountClosedException;
+import org.nova.customer.exception.CustomerAccountNotActiveException;
 import org.nova.customer.exception.CustomerEmailAlreadyExistsException;
 import org.nova.customer.exception.CustomerNotFoundException;
 import org.nova.customer.exception.CustomerPhoneAlreadyExistsException;
@@ -53,9 +53,9 @@ public class GlobalExceptionHandler {
         return new ApiError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
-    @ExceptionHandler(CustomerAccountClosedException.class)
+    @ExceptionHandler(CustomerAccountNotActiveException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleCustomerAccountClosedException(CustomerAccountClosedException ex) {
+    public ApiError handleCustomerAccountClosedException(CustomerAccountNotActiveException ex) {
         return new ApiError(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 
