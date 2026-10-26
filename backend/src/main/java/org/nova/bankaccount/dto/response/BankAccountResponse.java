@@ -3,7 +3,7 @@ package org.nova.bankaccount.dto.response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.nova.bankaccount.BankAccountStatus;
+import org.nova.bankaccount.entity.BankAccountStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

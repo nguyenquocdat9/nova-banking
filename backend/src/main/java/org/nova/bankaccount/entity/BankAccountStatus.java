@@ -1,4 +1,4 @@
-package org.nova.bankaccount;
+package org.nova.bankaccount.entity;
 
 public enum BankAccountStatus {
 

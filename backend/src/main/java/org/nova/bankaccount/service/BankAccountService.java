@@ -1,4 +1,4 @@
-package org.nova.bankaccount;
+package org.nova.bankaccount.service;
 
 import org.nova.bankaccount.dto.request.BankAccountCreateRequest;
 import org.nova.bankaccount.dto.response.BankAccountResponse;

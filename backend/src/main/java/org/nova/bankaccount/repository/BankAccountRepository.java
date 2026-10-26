@@ -1,5 +1,6 @@
-package org.nova.bankaccount;
+package org.nova.bankaccount.repository;
 
+import org.nova.bankaccount.entity.BankAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

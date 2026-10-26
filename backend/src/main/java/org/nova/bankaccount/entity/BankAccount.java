@@ -1,4 +1,4 @@
-package org.nova.bankaccount;
+package org.nova.bankaccount.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

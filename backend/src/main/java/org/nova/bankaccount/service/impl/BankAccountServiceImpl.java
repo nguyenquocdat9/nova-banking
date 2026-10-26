@@ -1,13 +1,13 @@
-package org.nova.bankaccount.dto;
+package org.nova.bankaccount.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.nova.bankaccount.BankAccount;
-import org.nova.bankaccount.BankAccountRepository;
-import org.nova.bankaccount.BankAccountService;
-import org.nova.bankaccount.BankAccountStatus;
+import org.nova.bankaccount.entity.BankAccount;
+import org.nova.bankaccount.repository.BankAccountRepository;
+import org.nova.bankaccount.entity.BankAccountStatus;
 import org.nova.bankaccount.dto.request.BankAccountCreateRequest;
 import org.nova.bankaccount.dto.response.BankAccountResponse;
+import org.nova.bankaccount.service.BankAccountService;
 import org.nova.customer.entity.Customer;
 import org.nova.customer.entity.CustomerStatus;
 import org.nova.customer.exception.CustomerAccountNotActiveException;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
